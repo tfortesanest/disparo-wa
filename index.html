@@ -2,16 +2,24 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Pré-anestesia — Contatos</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#12191b">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Pré-anestesia">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="icon" href="icon-192.png">
 <style>
   :root {
-    --ink: #1a2b2e;
-    --ink-soft: #4a5c5f;
+    --ink: #12191b;
+    --ink-soft: #51686b;
     --paper: #f7f5f0;
     --line: #d8d2c4;
-    --accent: #2d6a5e;
-    --accent-soft: #e3ede9;
+    --accent: #0e8f66;
+    --accent-soft: #e2f2ea;
     --warn: #a3491f;
     --warn-soft: #f5e5da;
     --radius: 3px;
@@ -36,22 +44,52 @@
 
   header {
     border-bottom: 2px solid var(--ink);
-    padding-bottom: 14px;
+    padding-bottom: 0;
     margin-bottom: 22px;
   }
 
+  .header-top {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
   h1 {
-    font-size: 22px;
-    font-weight: 600;
+    font-size: 26px;
+    font-weight: 700;
     margin: 0 0 2px;
-    letter-spacing: -0.01em;
+    letter-spacing: -0.015em;
   }
 
   .subtitle {
     font-family: -apple-system, 'Helvetica Neue', sans-serif;
     font-size: 13px;
     color: var(--ink-soft);
-    margin: 0;
+    margin: 0 0 12px;
+  }
+
+  .ecg-line {
+    display: block;
+    width: 100%;
+    height: 22px;
+    margin-bottom: 12px;
+    overflow: hidden;
+  }
+
+  .ecg-line svg {
+    width: 200%;
+    height: 100%;
+    animation: ecg-scroll 4.8s linear infinite;
+  }
+
+  @keyframes ecg-scroll {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ecg-line svg { animation: none; }
   }
 
   .search-row {
@@ -302,6 +340,12 @@
   <header>
     <h1>Pré-anestesia</h1>
     <p class="subtitle">Buscar procedimentos do dia e enviar para contato</p>
+    <span class="ecg-line" aria-hidden="true">
+      <svg viewBox="0 0 660 40" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0,20 L10,20 Q15.6,16 18,16 T26,20 L36,20 L39,23 L45,4 L50,26 L55,20 L63,20 Q69.8,14 71.8,14 Q79.5,14 85,20 L110,20 Q115.6,16 118,16 T126,20 L136,20 L139,23 L145,4 L150,26 L155,20 L163,20 Q169.8,14 171.8,14 Q179.5,14 185,20 L210,20 Q215.6,16 218,16 T226,20 L236,20 L239,23 L245,4 L250,26 L255,20 L263,20 Q269.8,14 271.8,14 Q279.5,14 285,20 L330,20 L340,20 Q345.6,16 348,16 T356,20 L366,20 L369,23 L375,4 L380,26 L385,20 L393,20 Q399.8,14 401.8,14 Q409.5,14 415,20 L440,20 Q445.6,16 448,16 T456,20 L466,20 L469,23 L475,4 L480,26 L485,20 L493,20 Q499.8,14 501.8,14 Q509.5,14 515,20 L540,20 Q545.6,16 548,16 T556,20 L566,20 L569,23 L575,4 L580,26 L585,20 L593,20 Q599.8,14 601.8,14 Q609.5,14 615,20 L660,20"
+          fill="none" stroke="#0e8f66" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </span>
   </header>
 
   <div class="search-row">
@@ -663,7 +707,7 @@ async function buscarDia() {
     const resp = await fetch(url);
 
     if (!resp.ok) {
-      statusEl.textContent = `Erro HTTP ${resp.status} ao buscar. [diag: type=${resp.type}, url=${resp.url}, redirected=${resp.redirected}]`;
+      statusEl.textContent = `Erro HTTP ${resp.status} ao buscar.`;
       statusEl.className = 'status error';
       return;
     }
@@ -833,6 +877,13 @@ function toggleRemover(id) {
   const iso = amanha.toISOString().split('T')[0];
   document.getElementById('dateInput').value = iso;
 })();
+</script>
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('sw.js').catch(() => {});
+  });
+}
 </script>
 </body>
 </html>
