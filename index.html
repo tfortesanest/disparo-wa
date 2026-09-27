@@ -663,7 +663,7 @@ async function buscarDia() {
     const resp = await fetch(url);
 
     if (!resp.ok) {
-      statusEl.textContent = `Erro HTTP ${resp.status} ao buscar.`;
+      statusEl.textContent = `Erro HTTP ${resp.status} ao buscar. [diag: type=${resp.type}, url=${resp.url}, redirected=${resp.redirected}]`;
       statusEl.className = 'status error';
       return;
     }
