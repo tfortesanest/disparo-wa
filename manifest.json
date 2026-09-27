@@ -1,6 +1,6 @@
 {
-  "name": "Pré-anestesia — Contatos",
-  "short_name": "Pré-anestesia",
+  "name": "Disparo WA",
+  "short_name": "Disparo WA",
   "description": "Buscar procedimentos do dia e enviar contato para pacientes",
   "start_url": "./index.html",
   "scope": "./",
@@ -22,13 +22,13 @@
       "purpose": "any"
     },
     {
-      "src": "icon-192.png",
+      "src": "icon-192-maskable.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "maskable"
     },
     {
-      "src": "icon-512.png",
+      "src": "icon-512-maskable.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable"
