@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pré-anestesia — Contatos</title>
+<style>
+  :root {
+    --ink: #1a2b2e;
+    --ink-soft: #4a5c5f;
+    --paper: #f7f5f0;
+    --line: #d8d2c4;
+    --accent: #2d6a5e;
+    --accent-soft: #e3ede9;
+    --warn: #a3491f;
+    --warn-soft: #f5e5da;
+    --radius: 3px;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Iowan Old Style', 'Georgia', serif;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap {
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 24px 18px 80px;
+  }
+
+  header {
+    border-bottom: 2px solid var(--ink);
+    padding-bottom: 14px;
+    margin-bottom: 22px;
+  }
+
+  h1 {
+    font-size: 22px;
+    font-weight: 600;
+    margin: 0 0 2px;
+    letter-spacing: -0.01em;
+  }
+
+  .subtitle {
+    font-family: -apple-system, 'Helvetica Neue', sans-serif;
+    font-size: 13px;
+    color: var(--ink-soft);
+    margin: 0;
+  }
+
+  .search-row {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+
+  input[type="date"] {
+    flex: 1;
+    font-family: -apple-system, 'Helvetica Neue', sans-serif;
+    font-size: 16px;
+    padding: 11px 12px;
+    border: 1.5px solid var(--ink);
+    border-radius: var(--radius);
+    background: white;
+    color: var(--ink);
+  }
+
+  button {
+    font-family: -apple-system, 'Helvetica Neue', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    padding: 11px 18px;
+    border-radius: var(--radius);
+    border: 1.5px solid var(--ink);
+    background: var(--ink);
+    color: var(--paper);
+    cursor: pointer;
+    white-space: nowrap;
+  }
+
+  button:active { transform: translateY(1px); }
+  button:disabled { opacity: 0.4; cursor: default; }
+
+  .status {
+    font-family: -apple-system, 'Helvetica Neue', sans-serif;
+    font-size: 13px;
+    color: var(--ink-soft);
+    margin: 10px 0 0;
+    min-height: 18px;
+  }
+
+  .status.error { color: var(--warn); }
+
+  .count-line {
+    font-family: -apple-system, 'Helvetica Neue', sans-serif;
+    font-size: 13px;
+    color: var(--ink-soft);
+    margin: 20px 0 10px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .patient-card {
+    background: white;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 14px;
+    margin-bottom: 10px;
+  }
+
+  .patient-card.removed {
+    opacity: 0.4;
+  }
+
+  .patient-card.enviado {
+    border-color: var(--accent);
+    background: var(--accent-soft);
+  }
+
+  .field-label {
+    font-family: -apple-system, 'Helvetica Neue', sans-serif;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--ink-soft);
+    margin-bottom: 3px;
+    display: block;
+  }
+
+  .field {
+    margin-bottom: 10px;
+  }
+
+  input[type="text"] {
+    width: 100%;
+    font-family: -apple-system, 'Helvetica Neue', sans-serif;
+    font-size: 15px;
+    padding: 8px 10px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--paper);
+    color: var(--ink);
+  }
+
+  input[type="text"]:focus {
+    outline: none;
+    border-color: var(--accent);
+    background: white;
+  }
+
+  select {
+    width: 100%;
+    font-family: -apple-system, 'Helvetica Neue', sans-serif;
+    font-size: 15px;
+    padding: 8px 10px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--paper);
+    color: var(--ink);
+  }
+
+  .genero-field {
+    max-width: 140px;
+  }
+
+  .procedimento-tag {
+    font-family: -apple-system, 'Helvetica Neue', sans-serif;
+    font-size: 13px;
+    color: var(--accent);
+    background: var(--accent-soft);
+    padding: 4px 9px;
+    border-radius: var(--radius);
+    display: inline-block;
+  }
+
+  .card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+
+  .remove-btn {
+    font-family: -apple-system, 'Helvetica Neue', sans-serif;
+    font-size: 12px;
+    background: none;
+    border: none;
+    color: var(--warn);
+    padding: 2px 4px;
+    font-weight: 400;
+  }
+
+  .card-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 12px;
+  }
+
+  .whatsapp-btn {
+    flex: 1;
+    background: var(--accent);
+    border-color: var(--accent);
+    text-align: center;
+    text-decoration: none !important;
+    display: inline-block;
+    padding: 11px;
+    color: #ffffff !important;
+    font-family: -apple-system, 'Helvetica Neue', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    border-radius: var(--radius);
+    border: 1.5px solid var(--accent);
+    visited: #ffffff;
+  }
+
+  .whatsapp-btn:visited {
+    color: #ffffff !important;
+  }
+
+  .whatsapp-btn.sent {
+    background: transparent;
+    color: var(--accent) !important;
+  }
+
+  .whatsapp-btn.no-phone {
+    background: var(--warn-soft);
+    border-color: var(--warn);
+    color: var(--warn) !important;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+
+  .empty-state {
+    font-family: -apple-system, 'Helvetica Neue', sans-serif;
+    font-size: 14px;
+    color: var(--ink-soft);
+    text-align: center;
+    padding: 40px 20px;
+    border: 1px dashed var(--line);
+    border-radius: var(--radius);
+  }
+
+  .spinner {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    border: 2px solid var(--line);
+    border-top-color: var(--ink);
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    vertical-align: middle;
+    margin-right: 6px;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .sent-tag {
+    font-family: -apple-system, 'Helvetica Neue', sans-serif;
+    font-size: 11px;
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  .contato-aviso {
+    font-family: -apple-system, 'Helvetica Neue', sans-serif;
+    font-size: 13px;
+    color: #7a5a1e;
+    background: #f7ecd0;
+    border: 1px solid #d9b869;
+    border-radius: var(--radius);
+    padding: 8px 10px;
+    margin-bottom: 10px;
+  }
+
+  .toggle-row {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-family: -apple-system, 'Helvetica Neue', sans-serif;
+    font-size: 13px;
+    color: var(--ink-soft);
+    margin-bottom: 10px;
+    cursor: pointer;
+  }
+
+  .toggle-row input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <h1>Pré-anestesia</h1>
+    <p class="subtitle">Buscar procedimentos do dia e enviar para contato</p>
+  </header>
+
+  <div class="search-row">
+    <input type="date" id="dateInput">
+    <button id="searchBtn" onclick="buscarDia()">Buscar</button>
+  </div>
+  <p class="status" id="searchStatus"></p>
+  <p style="font-size:0.8em;"><a href="#" onclick="localStorage.removeItem('preAnestesiaToken'); alert('Token removido. Será pedido novamente na próxima busca.'); return false;">trocar token salvo</a></p>
+
+  <div id="results"></div>
+
+</div>
+
+<script>
+const CALENDAR_URL = 'https://script.google.com/macros/s/AKfycbytjwIZXl1gh4WfDDH1NypdGxNGdm_hguuJKSgdADYgdGnNe_O-YvwcAMABT3CRb14YcQ/exec';
+function getToken() {
+  let t = localStorage.getItem('preAnestesiaToken');
+  if (!t) {
+    t = prompt('Digite o token de acesso:');
+    if (t) localStorage.setItem('preAnestesiaToken', t.trim());
+  }
+  return (t || '').trim();
+}
+const FORM_BASE_URL = 'https://docs.google.com/forms/d/e/1FAIpQLScFXQWmu92Qi6aqz2XNF94_UU84if2QQAiH_hkWq7pzyHHUfg/viewform?entry.147828166=';
+
+const MENSAGEM_TEMPLATE = 'Oi {NOME}, tudo bem? Aqui é o Tiago, anestesista da equipe do Dr. Périssé. Antes do seu procedimento, preciso que você preencha um formulário rápido com algumas informações de saúde. É simples e rápido, leva poucos minutos. Qualquer dúvida, pode me chamar aqui. Muito obrigado e até lá! Segue o link: {LINK}';
+
+const MENSAGEM_TEMPLATE_ACOMPANHANTE = 'Olá, {NOME_CONTATO}, aqui é o Tiago, médico anestesista que acompanhará o procedimento {TRATAMENTO} {NOME_PACIENTE}. Antes do procedimento, preciso que preencha um formulário rápido com algumas informações de saúde. É simples e rápido, leva poucos minutos. Qualquer dúvida, pode me chamar aqui. Muito obrigado e até lá! Segue o link: {LINK}';
+
+// ---------- Link do formulário e mensagem de WhatsApp ----------
+function montarLinkForm(nome) {
+  return FORM_BASE_URL + encodeURIComponent(nome);
+}
+
+function montarMensagem(nomePaciente, linkForm, nomeContato, generoPaciente) {
+  const primeiroNomePaciente = nomePaciente.split(' ')[0];
+  if (nomeContato) {
+    const primeiroNomeContato = nomeContato.split(' ')[0];
+    const tratamento = generoPaciente === 'F' ? 'da Sra.' : 'do Sr.';
+    return MENSAGEM_TEMPLATE_ACOMPANHANTE
+      .replace('{NOME_CONTATO}', primeiroNomeContato)
+      .replace('{TRATAMENTO}', tratamento)
+      .replace('{NOME_PACIENTE}', primeiroNomePaciente)
+      .replace('{LINK}', linkForm);
+  }
+  return MENSAGEM_TEMPLATE
+    .replace('{NOME}', primeiroNomePaciente)
+    .replace('{LINK}', linkForm);
+}
+
+// ---------- Normalização de nome de procedimento ----------
+function normalizarProcedimento(tituloBruto) {
+  const t = tituloBruto.toUpperCase();
+  const has = (...words) => words.every(w => t.includes(w));
+  const hasAny = (...words) => words.some(w => t.includes(w));
+
+  if (has('EDA', 'GTT')) return 'Gastrostomia endoscópica';
+  if (has('GTT') && !has('EDA')) return 'Troca de gastrostomia';
+  if (has('EDA', 'DILAT') && hasAny('ESOFAG', 'ECO ALTA') && !has('COLONO')) return 'EDA + dilatação esofágica';
+  if (has('EDA', 'DILAT') && !has('COLONO')) return 'EDA + dilatação esofágica';
+  if (hasAny('EDA') && hasAny('POLI') && has('COLONO') && (t.match(/POLI/g) || []).length >= 2) {
+    return 'Endoscopia digestiva alta + colonoscopia';
+  }
+  if (has('ECO ALTA') && has('EDA') && has('ECO BAIXA') && has('COLONO')) return 'Ecoendoscopia + EDA + colonoscopia';
+  if (hasAny('ECO DIAG', 'ECO TERAP') && has('CPRE')) return 'Ecoendoscopia + CPRE';
+  if (has('ECO ALTA') && has('CPRE')) return 'Ecoendoscopia + CPRE';
+  if (has('ECO', 'CPRE') && !has('PAAF')) return 'Ecoendoscopia + CPRE';
+  if (has('ECO', 'PAAF') && has('CPRE')) return 'Ecoendoscopia com PAAF + CPRE';
+  if (has('ECO', 'PAAF')) return 'Ecoendoscopia com PAAF';
+  if (hasAny('ECO DIAG', 'ECO TERAP', 'ECO ALTA') && !has('CPRE') && !has('EDA') && !has('COLONO')) {
+    return 'Ecoendoscopia diagnóstica';
+  }
+  if (has('CPRE') && !hasAny('ECO', 'EDA', 'COLONO')) return 'CPRE';
+  if (has('EDA') && hasAny('BIÓPSIA', 'BIOPSIA')) return 'Endoscopia digestiva alta';
+  if (has('EDA') && has('ESCLEROSE')) return 'Endoscopia digestiva alta';
+  if (has('DILAT') && has('OPME') && !hasAny('EDA', 'ECO')) return 'Dilatação endoscópica';
+  if (has('COLONO') && hasAny('POLI', 'MUCOSECTOMIA') && !has('EDA')) return 'Colonoscopia';
+  if (has('COLONO') && hasAny('DIL', 'DILAT') && !hasAny('POLI', 'POLIPECTOMIA')) return 'Colonoscopia + dilatação';
+  if (has('COLONO') && !has('EDA')) return 'Colonoscopia';
+  if (has('EDA') && has('COLONO')) return 'EDA + colonoscopia';
+  if (has('EDA')) return 'Endoscopia digestiva alta';
+
+  // Fallback: em vez de devolver o título bruto inteiro (ruim visualmente),
+  // extrai só as siglas de procedimento conhecidas encontradas no título.
+  const SIGLAS_CONHECIDAS = [
+    ['ECO PAAF', 'Ecoendoscopia com PAAF'], ['ECO DIAG', 'Ecoendoscopia'],
+    ['ECO TERAP', 'Ecoendoscopia'], ['ECO ALTA', 'Ecoendoscopia'],
+    ['ECO BAIXA', 'Ecoendoscopia'], ['CPRE', 'CPRE'], ['GTT', 'GTT'],
+    ['COLONO', 'Colonoscopia'], ['EDA', 'EDA'], ['DILAT', 'Dilatação'],
+    ['MUCOSECTOMIA', 'Mucosectomia'], ['ESCLEROSE', 'Escleroterapia'],
+    ['CÁPSULA', 'Cápsula endoscópica'], ['CAPSULA', 'Cápsula endoscópica']
+  ];
+  const encontradas = [];
+  SIGLAS_CONHECIDAS.forEach(([sigla, label]) => {
+    if (t.includes(sigla) && !encontradas.includes(label)) {
+      encontradas.push(label);
+    }
+  });
+  if (encontradas.length > 0) {
+    return encontradas.join(' + ');
+  }
+
+  return 'Procedimento (verificar)';
+}
+
+// ---------- Extração de nome candidato do paciente ----------
+function extrairNomeCandidato(tituloBruto) {
+  const tituloNormalizado = tituloBruto.replace(/\s*-\s*/g, ' - ');
+  const segmentos = tituloNormalizado.split(/\s+-\s+/).map(s => s.trim()).filter(Boolean);
+
+  const STOPWORDS = new Set([
+    'UNIMED', 'ASSIM', 'AMIL', 'CABERJ', 'GEAP', 'PARTICULAR', 'SULAMERICA',
+    'PLANILHA GERAL', 'LAUDO', 'LAUDO SIM', 'GUIA', 'SENHA', 'TISS',
+    'HCJ', 'S. LUCAS', 'S. MATHEUS', 'UNIMED BARRA', 'HSL NITEROI', 'PROSURGERY',
+    'DR ALOAN', 'DR. ALOAN', 'VEM FUAD CHIDID', 'VEM TIJUCA', 'VEM S. MATHEUS',
+    'EDA', 'ECO', 'CPRE', 'COLONO', 'GTT', 'DILATAÇÃO', 'DILATACAO', 'POLIPECTOMIA',
+    'ECO DIAG', 'ECO TERAP', 'ECO ALTA', 'ECO BAIXA', 'ECO PAAF', 'PAAF',
+    'MUCOSECTOMIA', 'ESCLEROSE', 'PROT', 'PRÓTESE', 'PROTESE', 'LITO', 'DIL',
+    'OPME', 'BIÓPSIA', 'BIOPSIA', 'RET', 'CANCELADO', 'SUSPENSO'
+  ]);
+
+  const PROCEDIMENTO_WORDS = [
+    'EDA', 'ECO', 'CPRE', 'COLONO', 'GTT', 'DILAT', 'POLIPECTOMIA', 'POLI',
+    'MUCOSECTOMIA', 'ESCLEROSE', 'PROT', 'PRÓTESE', 'PROTESE', 'LITO',
+    'OPME', 'BIÓPSIA', 'BIOPSIA', 'RET CP', 'CORPO ESTRANHO', 'PAAF'
+  ];
+
+  function looksLikeName(seg) {
+    if (/\d/.test(seg)) return false;
+    if (seg.length < 4) return false;
+    const upper = seg.toUpperCase();
+    if (STOPWORDS.has(upper)) return false;
+    for (const sw of STOPWORDS) {
+      if (upper === sw) return false;
+    }
+    for (const pw of PROCEDIMENTO_WORDS) {
+      if (upper.includes(pw)) return false;
+    }
+    const palavras = seg.split(/\s+/).filter(w => w.length > 1);
+    if (palavras.length < 2) return false;
+    return true;
+  }
+
+  for (let i = segmentos.length - 1; i >= 0; i--) {
+    if (looksLikeName(segmentos[i])) {
+      return segmentos[i];
+    }
+  }
+
+  const CONECTIVOS = new Set(['E', 'DE', 'DA', 'DO', 'DAS', 'DOS', 'COM']);
+  const ultimoSeg = segmentos[segmentos.length - 1] || tituloBruto;
+  const palavrasUltimo = ultimoSeg.split(/\s+/).filter(Boolean);
+
+  let inicioNome = palavrasUltimo.length;
+  for (let i = palavrasUltimo.length - 1; i >= 0; i--) {
+    const w = palavrasUltimo[i];
+    const upperW = w.toUpperCase().replace(/[^\wÀ-ÿ]/g, '');
+    const isProcWord = PROCEDIMENTO_WORDS.some(pw => upperW.includes(pw) || pw.includes(upperW));
+    const isConector = /^\+$/.test(w) || upperW.length === 0;
+    if (isProcWord || (isConector && !CONECTIVOS.has(upperW))) {
+      break;
+    }
+    inicioNome = i;
+  }
+
+  const nomeExtraido = palavrasUltimo.slice(inicioNome).join(' ').trim();
+  if (nomeExtraido.split(/\s+/).filter(w => w.length > 1).length >= 2) {
+    return nomeExtraido;
+  }
+
+  return ultimoSeg;
+}
+
+// ---------- Capitalização "Nome Próprio" ----------
+// Títulos do Calendar costumam vir em CAIXA ALTA; a planilha histórica
+// usa capitalização normal (ex: "Eric Maya Bittencourt").
+const PARTICULAS_MINUSCULAS = new Set(['de', 'da', 'do', 'das', 'dos', 'e']);
+
+function capitalizarNome(nomeBruto) {
+  return nomeBruto
+    .toLowerCase()
+    .split(/\s+/)
+    .map((palavra, idx) => {
+      if (idx > 0 && PARTICULAS_MINUSCULAS.has(palavra)) return palavra;
+      if (palavra.length === 0) return palavra;
+      return palavra.charAt(0).toUpperCase() + palavra.slice(1);
+    })
+    .join(' ');
+}
+
+// ---------- Inferência de gênero pelo primeiro nome ----------
+// Camada 1: lista de exceções (nomes comuns no Brasil que a regra de
+// terminação erraria). Camada 2: fallback pela terminação da palavra.
+const NOMES_MASCULINOS_EXCECAO = new Set([
+  'lucas', 'nicolas', 'nicolás', 'tomas', 'tomás', 'isaias', 'isaías',
+  'elias', 'jonas', 'matias', 'joas', 'joás', 'andré', 'andre', 'josé',
+  'jose', 'luiz', 'raul', 'ravi', 'davi', 'davy', 'ravy', 'kadu',
+  'guilherme', 'jorge', 'felipe', 'henrique', 'alexandre', 'wagner',
+  'igor', 'caique', 'caíque', 'heitor', 'heytor', 'cauã', 'caua',
+  'juan', 'ian', 'iam', 'kaua', 'kauã', 'noah', 'thales', 'tales'
+]);
+const NOMES_FEMININOS_EXCECAO = new Set([
+  'isis', 'ísis', 'ruth', 'rute', 'raquel', 'marilyn', 'ingrid', 'ingryd',
+  'jaqueline', 'jacqueline', 'evelyn', 'evelin', 'carmem', 'carmen',
+  'miriam', 'míriam', 'esther', 'ester', 'noemi', 'noêmi', 'yasmin',
+  'yasmim', 'jasmin', 'jasmim', 'nicole', 'giovanne', 'alice', 'bruna',
+  'iris', 'íris', 'vitoria', 'vitória', 'gabriele', 'valquiria', 'valquíria'
+]);
+
+function inferirGenero(primeiroNomeBruto) {
+  const nome = primeiroNomeBruto
+    .toLowerCase()
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, ''); // remove acentos p/ comparação
+
+  if (NOMES_MASCULINOS_EXCECAO.has(nome)) return 'M';
+  if (NOMES_FEMININOS_EXCECAO.has(nome)) return 'F';
+
+  // Fallback: terminações típicas do português
+  if (/[aã]$/i.test(nome)) return 'F';
+  if (/(ia|ice|riz|dete|dine|lene)$/i.test(nome)) return 'F';
+  if (/[oeuáéíóú]$/i.test(nome) || /[^aeiou]$/i.test(nome)) return 'M';
+
+  return 'M'; // default conservador
+}
+
+// ---------- Extração de telefones celulares + rótulo de contato ----------
+// Retorna [{ numero: 'DDDNNNNNNNNN', rotulo: 'Luzia - Mãe' | null }, ...]
+// O rótulo é capturado quando o texto logo após o telefone tem o padrão
+// "(Nome - Parentesco)" ou "Nome - Parentesco", comum no campo "local".
+const PARENTESCOS_CONHECIDOS = [
+  'mãe', 'mae', 'pai', 'filha', 'filho', 'esposa', 'esposo', 'marido',
+  'irmã', 'irma', 'irmão', 'irmao', 'neta', 'neto', 'sobrinha', 'sobrinho',
+  'cuidadora', 'cuidador', 'acompanhante', 'responsável', 'responsavel',
+  'genro', 'nora', 'tia', 'tio', 'avó', 'avo', 'avô', 'companheira', 'companheiro'
+];
+
+function extrairTelefonesCelular(localBruto) {
+  if (!localBruto) return [];
+  const encontrados = [];
+  const regex = /(?:\(?(\d{2})\)?\s*)?(9\d{4}[-\s]?\d{4})/g;
+  let match;
+  while ((match = regex.exec(localBruto)) !== null) {
+    const ddd = match[1] || '21';
+    const numero = match[2].replace(/[-\s]/g, '');
+    if (numero.length !== 9 || !numero.startsWith('9')) continue;
+
+    const completo = ddd + numero;
+    if (encontrados.some(e => e.numero === completo)) continue;
+
+    // Olha o texto logo depois do telefone (até 60 caracteres) atrás de um rótulo
+    const restoTexto = localBruto.slice(match.index + match[0].length, match.index + match[0].length + 60);
+    const rotulo = extrairRotuloContato(restoTexto);
+
+    encontrados.push({ numero: completo, rotulo });
+  }
+  return encontrados;
+}
+
+function extrairRotuloContato(trecho) {
+  // Padrão "(Nome - Parentesco)" ou " - Nome - Parentesco" ou "(Parentesco)"
+  const parenteses = trecho.match(/\(([^)]+)\)/);
+  const candidato = parenteses ? parenteses[1] : trecho.split(/[,.]/)[0];
+
+  if (!candidato) return null;
+  const candidatoLower = candidato.toLowerCase();
+  const temParentesco = PARENTESCOS_CONHECIDOS.some(p => candidatoLower.includes(p));
+  if (!temParentesco) return null;
+
+  return candidato.trim();
+}
+
+// Separa "Luzia - Mãe" em { nomeContato: 'Luzia', parentesco: 'Mãe' }
+function separarNomeParentesco(rotulo) {
+  if (!rotulo) return { nomeContato: null, parentesco: null };
+  const partes = rotulo.split('-').map(s => s.trim());
+  if (partes.length >= 2) {
+    // qual dos dois é o parentesco?
+    const p0temParentesco = PARENTESCOS_CONHECIDOS.some(p => partes[0].toLowerCase().includes(p));
+    if (p0temParentesco) {
+      return { nomeContato: capitalizarNome(partes[1]), parentesco: capitalizarNome(partes[0]) };
+    }
+    return { nomeContato: capitalizarNome(partes[0]), parentesco: capitalizarNome(partes[1]) };
+  }
+  // só parentesco, sem nome (ex: "(zap consulta)")
+  return { nomeContato: null, parentesco: capitalizarNome(rotulo) };
+}
+
+function formatarTelefoneExibicao(numeroLimpo) {
+  if (numeroLimpo.length !== 11) return numeroLimpo;
+  const ddd = numeroLimpo.slice(0, 2);
+  const parte1 = numeroLimpo.slice(2, 7);
+  const parte2 = numeroLimpo.slice(7);
+  return `(${ddd}) ${parte1}-${parte2}`;
+}
+
+function apenasDigitos(str) {
+  return (str || '').replace(/\D/g, '');
+}
+
+// ---------- Link do formulário e mensagem de WhatsApp ----------
+function montarLinkForm(nome) {
+  return FORM_BASE_URL + encodeURIComponent(nome);
+}
+
+function montarLinkWhatsApp(telefoneDigitos, mensagem) {
+  return `https://wa.me/55${telefoneDigitos}?text=${encodeURIComponent(mensagem)}`;
+}
+
+// ---------- Estado ----------
+let linhasAtuais = []; // { id, nome, telefone, procedimento, removido }
+let dataAtualISO = '';
+
+function chaveEnvio(dataISO, nome, telefone) {
+  return `enviado:${dataISO}:${nome}:${apenasDigitos(telefone)}`;
+}
+
+async function jaFoiEnviado(dataISO, nome, telefone) {
+  try {
+    return localStorage.getItem(chaveEnvio(dataISO, nome, telefone)) === 'true';
+  } catch (e) {
+    return false;
+  }
+}
+
+async function marcarEnviado(dataISO, nome, telefone) {
+  try {
+    localStorage.setItem(chaveEnvio(dataISO, nome, telefone), 'true');
+  } catch (e) {
+    console.error('Falha ao salvar estado de envio:', e);
+  }
+}
+
+// ---------- Busca ----------
+async function buscarDia() {
+  const dataISO = document.getElementById('dateInput').value;
+  const statusEl = document.getElementById('searchStatus');
+  const resultsEl = document.getElementById('results');
+
+  if (!dataISO) {
+    statusEl.textContent = 'Escolha uma data.';
+    statusEl.className = 'status error';
+    return;
+  }
+
+  dataAtualISO = dataISO;
+  statusEl.innerHTML = '<span class="spinner"></span>Buscando na agenda...';
+  statusEl.className = 'status';
+  resultsEl.innerHTML = '';
+
+  try {
+    const token = getToken();
+    if (!token) {
+      statusEl.textContent = 'Token necessário para buscar.';
+      statusEl.className = 'status error';
+      return;
+    }
+
+    const url = `${CALENDAR_URL}?token=${encodeURIComponent(token)}&date=${dataISO}`;
+    const resp = await fetch(url);
+
+    if (!resp.ok) {
+      statusEl.textContent = `Erro HTTP ${resp.status} ao buscar.`;
+      statusEl.className = 'status error';
+      return;
+    }
+
+    let data;
+    try {
+      data = await resp.json();
+    } catch (e) {
+      statusEl.textContent = 'Resposta inválida do servidor (não é JSON). Verifique o token ou a URL do script.';
+      statusEl.className = 'status error';
+      return;
+    }
+
+    if (data.error) {
+      statusEl.textContent = 'Erro: ' + data.error;
+      statusEl.className = 'status error';
+      return;
+    }
+
+    const eventos = data.events || [];
+    statusEl.textContent = `${eventos.length} procedimento(s) encontrado(s) — ${data.excludedCount || 0} descartado(s) (consultas/outros)`;
+    statusEl.className = 'status';
+
+    if (eventos.length === 0) {
+      resultsEl.innerHTML = '<div class="empty-state">Nenhum procedimento nesse dia.</div>';
+      return;
+    }
+
+    linhasAtuais = [];
+    let contadorId = 0;
+
+    eventos.forEach(ev => {
+      const nomeCandidato = capitalizarNome(extrairNomeCandidato(ev.titulo || ''));
+      const procedimento = normalizarProcedimento(ev.titulo || '');
+      const telefones = extrairTelefonesCelular(ev.local || '');
+
+      if (telefones.length === 0) {
+        linhasAtuais.push({
+          id: contadorId++,
+          nome: nomeCandidato,
+          telefone: '',
+          procedimento: procedimento,
+          removido: false,
+          nomeContato: null,
+          parentesco: null,
+          usarNomeContato: false
+        });
+      } else {
+        telefones.forEach(t => {
+          const { nomeContato, parentesco } = separarNomeParentesco(t.rotulo);
+          linhasAtuais.push({
+            id: contadorId++,
+            nome: nomeCandidato,
+            telefone: formatarTelefoneExibicao(t.numero),
+            procedimento: procedimento,
+            removido: false,
+            nomeContato: nomeContato,
+            parentesco: parentesco,
+            // se identificamos parentesco, assume por padrão que é o acompanhante
+            usarNomeContato: !!parentesco
+          });
+        });
+      }
+    });
+
+    await renderizarCards();
+
+  } catch (err) {
+    statusEl.textContent = 'Erro ao buscar: ' + err.message;
+    statusEl.className = 'status error';
+  }
+}
+
+async function renderizarCards() {
+  const resultsEl = document.getElementById('results');
+  const ativos = linhasAtuais.filter(l => !l.removido);
+  const semTelefone = ativos.filter(l => !l.telefone).length;
+  const resumoTexto = semTelefone > 0
+    ? `${ativos.length} contato(s) — ⚠ ${semTelefone} sem telefone`
+    : `${ativos.length} contato(s)`;
+  resultsEl.innerHTML = `<p class="count-line">${resumoTexto}</p>`;
+
+  for (const linha of linhasAtuais) {
+    const enviado = linha.telefone
+      ? await jaFoiEnviado(dataAtualISO, linha.nome, linha.telefone)
+      : false;
+    linha._enviado = enviado;
+
+    const card = document.createElement('div');
+    card.className = 'patient-card' + (linha.removido ? ' removed' : '') + (enviado ? ' enviado' : '');
+
+    const linkForm = linha.telefone ? montarLinkForm(linha.nome) : '';
+    const nomeParaMensagem = (linha.usarNomeContato && linha.nomeContato) ? linha.nomeContato : null;
+    const generoPaciente = linha.genero || inferirGenero(linha.nome.split(' ')[0]);
+    const mensagem = linha.telefone ? montarMensagem(linha.nome, linkForm, nomeParaMensagem, generoPaciente) : '';
+    const telDigitos = apenasDigitos(linha.telefone);
+    const linkWhats = linha.telefone ? montarLinkWhatsApp(telDigitos, mensagem) : '';
+
+    const avisoAcompanhante = linha.parentesco
+      ? `<div class="contato-aviso">
+           📞 Telefone de ${linha.nomeContato ? linha.nomeContato + ' — ' : ''}${linha.parentesco}
+         </div>
+         <div class="field">
+           <span class="field-label">Nome do contato (acompanhante)</span>
+           <input type="text" value="${(linha.nomeContato || '').replace(/"/g, '&quot;')}" onchange="atualizarCampo(${linha.id}, 'nomeContato', this.value)">
+         </div>
+         <label class="toggle-row">
+           <input type="checkbox" ${linha.usarNomeContato ? 'checked' : ''} onchange="atualizarCampo(${linha.id}, 'usarNomeContato', this.checked)">
+           Usar nome do acompanhante na mensagem
+         </label>
+         ${linha.usarNomeContato ? `
+         <div class="field genero-field">
+           <span class="field-label">Tratamento do paciente na mensagem</span>
+           <select onchange="atualizarCampo(${linha.id}, 'genero', this.value)">
+             <option value="M" ${generoPaciente === 'M' ? 'selected' : ''}>Sr.</option>
+             <option value="F" ${generoPaciente === 'F' ? 'selected' : ''}>Sra.</option>
+           </select>
+         </div>` : ''}`
+      : '';
+
+    card.innerHTML = `
+      <div class="card-top">
+        <span class="procedimento-tag">${linha.procedimento}</span>
+        ${enviado ? '<span class="sent-tag">✓ Enviado</span>' : `<button class="remove-btn" onclick="toggleRemover(${linha.id})">${linha.removido ? 'Restaurar' : 'Remover'}</button>`}
+      </div>
+      <div class="field">
+        <span class="field-label">Nome do paciente</span>
+        <input type="text" value="${linha.nome.replace(/"/g, '&quot;')}" onchange="atualizarCampo(${linha.id}, 'nome', this.value)">
+      </div>
+      <div class="field">
+        <span class="field-label">Telefone</span>
+        <input type="text" value="${linha.telefone.replace(/"/g, '&quot;')}" onchange="atualizarCampo(${linha.id}, 'telefone', this.value)">
+      </div>
+      ${avisoAcompanhante}
+      ${!linha.removido ? (
+        linha.telefone
+          ? `<div class="card-actions">
+        <a class="whatsapp-btn${enviado ? ' sent' : ''}" href="${linkWhats}" target="_blank" onclick="marcarEnviado(dataAtualISO, '${linha.nome.replace(/'/g, "\\'")}', '${linha.telefone}').then(() => renderizarCards())">
+          ${enviado ? 'Reenviar WhatsApp' : 'Enviar WhatsApp'}
+        </a>
+      </div>`
+          : `<div class="card-actions">
+        <span class="whatsapp-btn no-phone">⚠ Sem telefone — verificar manualmente</span>
+      </div>`
+      ) : ''}
+    `;
+    resultsEl.appendChild(card);
+  }
+}
+
+function atualizarCampo(id, campo, valor) {
+  const linha = linhasAtuais.find(l => l.id === id);
+  if (linha) linha[campo] = valor;
+  renderizarCards();
+}
+
+function toggleRemover(id) {
+  const linha = linhasAtuais.find(l => l.id === id);
+  if (linha) linha.removido = !linha.removido;
+  renderizarCards();
+}
+
+// Data padrão: amanhã
+(function setDefaultDate() {
+  const amanha = new Date();
+  amanha.setDate(amanha.getDate() + 1);
+  const iso = amanha.toISOString().split('T')[0];
+  document.getElementById('dateInput').value = iso;
+})();
+</script>
+</body>
+</html>
